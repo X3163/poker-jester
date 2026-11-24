@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b1218">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="霓虹丑角">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script>if(location.protocol!=='file:'){for(const [rel,href] of [['manifest','./manifest.webmanifest'],['apple-touch-icon','./assets/apple-touch-icon.png'],['icon','./assets/icon-192.png']]){const l=document.createElement('link');l.rel=rel;l.href=href;document.head.appendChild(l)}}</script>
 <title>霓虹丑角 · 扑克肉鸽</title>
 <style>
 :root{--cw:90px;--jw:90px;--red:#ff4d5e;--blue:#18a0ff;--gold:#ffc23d;--green:#35d07f;--orange:#ff9a1f;--purple:#9b6bff;--panel:rgba(16,24,32,.86);--panel2:#25343f;--edge:#3d5262}
@@ -18,7 +23,7 @@ body.nocrt #crt,body.nocrt #vig{display:none}
 .lbl{font-size:12px;color:#b8c7d3;opacity:.9}
 .blue-t{color:var(--blue)}.red-t{color:var(--red)}.gold-t{color:var(--gold)}.green-t{color:var(--green)}
 .t,b,.btn,.bname,.hname{text-shadow:0 1px 0 rgba(0,0,0,.35)}
-#app{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1;display:grid;grid-template-columns:var(--sidew,250px) minmax(0,1fr);gap:10px;padding:10px;padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom));padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
+#app{position:fixed;top:var(--vtop,0px);right:0;bottom:auto;left:0;height:var(--vh,100dvh);z-index:1;display:grid;grid-template-columns:var(--sidew,250px) minmax(0,1fr);gap:10px;padding:10px;padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom));padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
 /* ------- side ------- */
 #side{background:var(--panel);border:3px solid #10171d;border-radius:10px;box-shadow:0 6px 0 rgba(0,0,0,.45),inset 0 0 0 2px #2e3f4c;padding:10px;display:flex;flex-direction:column;gap:9px;min-height:0;position:relative;overflow:hidden}
 #side::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--bcol,#2f6fd6)}
@@ -160,6 +165,7 @@ body.nocrt #crt,body.nocrt #vig{display:none}
 .popbtns .btn{font-size:14px;padding:7px 10px}
 /* overlays */
 #ov{position:fixed;top:0;right:0;bottom:0;left:0;z-index:850;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);padding:14px}
+#ov{top:var(--vtop,0px);bottom:auto;height:var(--vh,100dvh);padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
 #ov.show{display:flex}
 .modal{background:var(--panel);border-radius:14px;box-shadow:0 0 0 3px #0b1116,inset 0 0 0 3px #2e3f4c,0 10px 0 rgba(0,0,0,.4);padding:18px;max-width:760px;width:100%;max-height:100%;overflow:auto;animation:slideUp .3s cubic-bezier(.2,.9,.25,1.15)}
 .modal h2{margin:0 0 12px;text-align:center;font-size:28px}
@@ -274,6 +280,53 @@ body.mob .bcard .btn{padding:8px 12px;font-size:15px}
 body.mob .modal{padding:12px}
 body.mob .bigscore{font-size:40px}
 body.mob #panel{padding:8px}
+
+/* 稳定暂停、动态视口及短横屏：信息区独立滚动，不裁掉按钮。 */
+.game-paused #app *,.game-paused #fx *{animation-play-state:paused!important}
+.savehint{text-align:center;color:#cbd8e0;line-height:1.6;font-size:14px;margin:8px auto;max-width:640px}
+.modebadge{border:1px solid #496578;padding:8px;border-radius:6px}
+.menu{gap:9px}.menu .btn{font-size:16px;padding:9px 18px}
+#side{overflow-y:auto;overscroll-behavior:contain}
+#handArea{flex-shrink:0}#controls{flex-shrink:0}
+body.short #app{grid-template-columns:190px minmax(0,1fr);padding:6px max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));gap:6px}
+body.short #app{padding-top:max(6px,env(safe-area-inset-top))}
+body.short #side{padding:7px;gap:6px;display:flex;overflow:auto}
+body.short .sb-blind{padding:5px}body.short .sb-blind .bname{font-size:16px;padding:0 0 3px}
+body.short .btarget{padding:4px;flex-direction:row;gap:6px;justify-content:center;flex-wrap:wrap}
+body.short .btarget>.lbl{display:none}body.short .tnum{font-size:19px}
+body.short .sb-score{padding:5px}body.short .sb-score #sbScore{font-size:21px}
+body.short .sb-hand{padding:5px}body.short .hname{font-size:16px;min-height:20px}
+body.short .chipbox,body.short .multbox{font-size:20px;padding:5px}
+body.short .sb-bottom{margin-top:0;gap:5px;flex-shrink:0}body.short .sb-btns{width:52px;gap:5px}
+body.short .sb-btns .btn{padding:6px 3px;font-size:13px}
+body.short .sb-stats{gap:3px}body.short .st b{font-size:17px}body.short .st.wide b{font-size:19px}
+body.short .st{padding:3px}body.short .lbl{font-size:11px}
+body.short #mid{margin-top:16px;overflow-y:auto;overscroll-behavior:contain}
+body.short #playArea{flex:1 0 62px;min-height:62px}
+body.short #handArea{height:calc(var(--cw)*1.4 + 25px);min-height:calc(var(--cw)*1.4 + 25px)}
+body.short #hand{top:12px;right:0;left:0}
+body.short #controls{min-height:50px;gap:8px;padding:4px 52px 5px 0;position:sticky;bottom:0;z-index:40;background:rgba(8,18,26,.95);border-radius:8px}
+body.short #controls>.btn{min-width:76px;padding:9px 10px;font-size:15px}
+body.short .sortbox{padding:3px 5px}body.short .sortbox .btn{min-width:0!important;padding:5px 9px;font-size:13px}
+body.short #deck{width:38px;height:53px;bottom:9px;right:0;z-index:45}
+body.short #deckCount{font-size:10px;bottom:-12px}
+body.short .shop{gap:10px}body.short .shopL{width:116px}body.short .shopL .btn{font-size:16px;padding:9px}
+body.short .shelf{gap:10px;padding-top:23px}body.short .shoptitle{font-size:20px}
+body.short .blinds{min-height:270px}body.short .bcard .btn{font-size:15px;padding:8px 12px}
+body.short #panel.packmode{height:calc(100% - var(--cw)*1.4 - 82px);min-height:180px;z-index:24}
+body.short #controls:empty{display:none}
+body.short #controls{position:relative;bottom:auto}
+body.short #playArea{flex-basis:32px;min-height:32px}
+body.short .shop{height:auto;min-height:100%;align-items:flex-start}
+body.short .shopL{justify-content:flex-start;position:sticky;top:0}
+body.short .shopR{justify-content:flex-start}
+body.short #panel.packmode{position:relative;order:-1;height:auto;min-height:0;flex:none;overflow:visible}
+body.short[data-phase="pack"] #playArea{display:none}
+@media(max-height:700px) and (max-width:759px) and (orientation:portrait){
+ body.mob #side{gap:4px}body.mob .sb-blind .bname{font-size:15px}
+ body.mob #main{min-height:0}body.mob #playArea{min-height:72px}
+}
+
 </style>
 </head>
 <body>
@@ -326,7 +379,18 @@ const QS=new URLSearchParams(location.search);
 const SET=Object.assign({sfx:true,music:true,speed:1,crt:true},JSON.parse(localStorage.getItem('nj_set')||'{}'));
 if(QS.has('fast')){SET.speed=40;const oa=Element.prototype.animate;Element.prototype.animate=function(k,o){o=typeof o==='object'?Object.assign({},o,{duration:1,delay:0}):1;return oa.call(this,k,o)}}
 const saveSet=()=>localStorage.setItem('nj_set',JSON.stringify(Object.assign({},SET,QS.has('fast')?{speed:1}:{})));
-const sleep=ms=>new Promise(r=>setTimeout(r,ms/SET.speed));
+class RunCancelled extends Error {}
+let runEpoch=0;const pauseReasons=new Set();let heldAnimations=[];let pauseStarted=0,pauseElapsed=0;
+function activeNow(){const now=performance.now();return now-pauseElapsed-(pauseReasons.size?now-pauseStarted:0)}
+function setPaused(reason,on){
+ const wasPaused=pauseReasons.size>0;if(on)pauseReasons.add(reason);else pauseReasons.delete(reason);if(!wasPaused&&pauseReasons.size)pauseStarted=performance.now();else if(wasPaused&&!pauseReasons.size)pauseElapsed+=performance.now()-pauseStarted;
+ document.body.classList.toggle('game-paused',pauseReasons.size>0);
+ if(pauseReasons.size){for(const a of document.getAnimations()){if(a.effect&&a.effect.target&&a.effect.target.closest('#app,#fx')&&a.playState==='running'){a.pause();heldAnimations.push(a)}}}
+ else{for(const a of heldAnimations){try{if(a.playState==='paused')a.play()}catch(e){}}heldAnimations=[]}
+}
+function resetRuntime(){runEpoch++;busy=false;selected.clear();for(const a of document.getAnimations()){if(a.effect&&a.effect.target&&a.effect.target.closest('#app,#fx'))a.cancel()}heldAnimations=[];document.querySelectorAll('.spark').forEach(e=>e.remove());$('#fx').innerHTML='';$('#handLabel').classList.remove('show');hidePop();hideTip();}
+function sleep(ms){const epoch=runEpoch;let remaining=ms/SET.speed,last=activeNow();return new Promise((resolve,reject)=>{const tick=()=>{if(epoch!==runEpoch){reject(new RunCancelled());return}const now=activeNow();remaining-=now-last;last=now;if(remaining<=0){resolve();return}setTimeout(tick,16)};setTimeout(tick,0)})}
+function guarded(fn){return async function(...args){try{return await fn.apply(this,args)}catch(e){if(e instanceof RunCancelled)return;console.error(e);busy=false;toast('操作意外中断，请重新载入稳定存档');}}}
 function fmt(n){n=Math.floor(n);if(!isFinite(n))return '∞';if(Math.abs(n)<1e11)return n.toLocaleString('en-US');return n.toExponential(3).replace('e+','e')}
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 
@@ -352,7 +416,7 @@ function evalHand(cards){
   if(n===5&&g.length===5){const rs=cards.map(c=>c.r).sort((a,b)=>a-b);straight=rs[4]-rs[0]===4||rs.join()==='2,3,4,5,14'}
   let type,sc;
   if(straight&&flush){type='SF';sc=cards}
-  else if(g[0].length===4){type='4K';sc=g[0]}
+  else if(g[0].length>=4){type='4K';sc=g[0].slice(0,4)}
   else if(g[0].length===3&&g[1]&&g[1].length===2){type='FH';sc=cards}
   else if(flush){type='FL';sc=cards}
   else if(straight){type='ST';sc=cards}
@@ -546,23 +610,24 @@ function chipSVG(col,i){
 }
 
 /* ================= 程序合成音效（WebAudio） ================= */
-const AU={ctx:null,m:null,mus:null,nb:null,step:0,next:0,timer:null};
+const AU={gestureReady:false,ctx:null,m:null,mus:null,nb:null,step:0,next:0,timer:null};
 function actx(){
+  if(AU.ctx&&AU.ctx.state==='closed'){clearInterval(AU.timer);AU.timer=null;AU.ctx=null;audioResumePending=null}
   if(!AU.ctx){try{const C=window.AudioContext||window.webkitAudioContext;AU.ctx=new C();AU.m=AU.ctx.createGain();AU.m.gain.value=.55;AU.m.connect(AU.ctx.destination);
     AU.mus=AU.ctx.createGain();AU.mus.gain.value=SET.music?.06:0;const lp=AU.ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1800;AU.mus.connect(lp);lp.connect(AU.m);
     const len=AU.ctx.sampleRate*.5;AU.nb=AU.ctx.createBuffer(1,len,AU.ctx.sampleRate);const d=AU.nb.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
-    startMusic()}catch(e){AU.ctx=null}}
-  if(AU.ctx&&AU.ctx.state==='suspended')AU.ctx.resume();
+    AU.ctx.addEventListener('statechange',()=>{if(AU.ctx?.state!=='running')updateSoundStatus('声音已中断，点击测试声音可恢复')});startMusic()}catch(e){AU.ctx=null}}
+  if(AU.ctx&&['suspended','interrupted'].includes(AU.ctx.state)&&navigator.userActivation?.isActive)resumeAudio(false);
   return AU.ctx;
 }
 function tone(f,d,type='square',v=.1,f2=null,delay=0,dest=null){
-  const c=AU.ctx;if(!c||(!dest&&!SET.sfx))return;const t=c.currentTime+delay;
+  const c=AU.ctx;if(!c||!AU.gestureReady||c.state!=='running'||(!dest&&!SET.sfx))return;const t=c.currentTime+delay;
   const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
   g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.006);g.gain.exponentialRampToValueAtTime(.0001,t+d);
   o.connect(g);g.connect(dest||AU.m);o.start(t);o.stop(t+d+.03);
 }
 function noise(d,v=.1,fq=2000,delay=0,q=1){
-  const c=AU.ctx;if(!c||!SET.sfx)return;const t=c.currentTime+delay;const s=c.createBufferSource();s.buffer=AU.nb;
+  const c=AU.ctx;if(!c||!AU.gestureReady||c.state!=='running'||!SET.sfx)return;const t=c.currentTime+delay;const s=c.createBufferSource();s.buffer=AU.nb;
   const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=fq;f.Q.value=q;const g=c.createGain();
   g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f);f.connect(g);g.connect(AU.m);s.start(t);s.stop(t+d+.02);
 }
@@ -594,15 +659,38 @@ const PROG=[[57,60,64,67],[53,57,60,64],[48,52,55,59],[55,59,62,65]];
 const mtf=n=>440*Math.pow(2,(n-69)/12);
 function startMusic(){
   if(AU.timer)return;AU.next=AU.ctx.currentTime+.1;
-  AU.timer=setInterval(()=>{const c=AU.ctx;if(!c)return;while(AU.next<c.currentTime+.3){const st=AU.step,bar=Math.floor(st/8)%4,ch=PROG[bar],k=st%8;const t=AU.next-c.currentTime;
+  AU.timer=setInterval(()=>{const c=AU.ctx;if(!c||!AU.gestureReady||c.state!=='running'||document.hidden)return;while(AU.next<c.currentTime+.3){const st=AU.step,bar=Math.floor(st/8)%4,ch=PROG[bar],k=st%8;const t=AU.next-c.currentTime;
     if(k===0||k===4)tone(mtf(ch[0]-12),.45,'triangle',.5,null,t,AU.mus);
     tone(mtf(ch[[0,1,2,3,2,1,2,3][k]]+12),.16,'square',.16,null,t,AU.mus);
     if(k%2===1)tone(mtf(ch[2]),.2,'sine',.12,null,t,AU.mus);
     AU.step++;AU.next+=.21}},60);
 }
-function unlockAudio(){const c=actx();if(!c)return;try{const b=c.createBuffer(1,1,22050);const src=c.createBufferSource();src.buffer=b;src.connect(c.destination);src.start(0)}catch(e){}}
-['touchend','pointerup','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{passive:true}));
-document.addEventListener('visibilitychange',()=>{if(!AU.ctx)return;if(document.hidden)AU.ctx.suspend&&AU.ctx.suspend();else AU.ctx.resume&&AU.ctx.resume()});
+let soundMessage='声音等待点击启用';let audioResumePending=null;
+function updateSoundStatus(msg){if(msg)soundMessage=msg;const status=document.getElementById('audioStatus');if(status)status.textContent=(!SET.sfx&&!SET.music)?'音效和音乐已关闭（已记住设置）':soundMessage;}
+async function resumeAudio(explicit){
+ const c=AU.ctx;if(!c)return false;
+ if(explicit&&'audioSession' in navigator){try{navigator.audioSession.type='playback'}catch(e){}}
+ if(audioResumePending)return audioResumePending;
+ const task=(async()=>{try{
+  if(c.state!=='running'){let timer;try{await Promise.race([c.resume(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('resume timeout')),1800)})])}finally{clearTimeout(timer)}}
+  if(c.state!=='running'){updateSoundStatus('声音暂不可用，请点击“测试声音”重试');return false}
+  AU.next=c.currentTime+.08;updateSoundStatus('音频已就绪；听不到请检查系统音量及输出设备');return true;
+ }catch(e){updateSoundStatus('浏览器未恢复声音，请再次点击测试声音');return false}})();
+ audioResumePending=task;try{return await task}finally{if(audioResumePending===task)audioResumePending=null}
+}
+async function unlockAudio(){if(!SET.sfx&&!SET.music)return;const c=actx();if(!c)return;AU.gestureReady=await resumeAudio(false);}
+async function testSound(){
+ SET.sfx=true;saveSet();const toggle=document.querySelector('[data-act=tsfx]');if(toggle){toggle.textContent='开';toggle.classList.remove('gray');toggle.classList.add('green')}const c=actx();if(!c){updateSoundStatus('此浏览器无法创建音频，请稍后重试');return}
+ if(await resumeAudio(true)){AU.gestureReady=true;SFX.win();updateSoundStatus('测试音已发出；此操作可能暂停其他 App 音乐');}
+}
+['touchend','pointerup','keydown'].forEach(ev=>document.addEventListener(ev,()=>{unlockAudio().catch(()=>updateSoundStatus('请点击测试声音重试'))},{passive:true}));
+document.addEventListener('visibilitychange',()=>{
+ setPaused('background',document.hidden);
+ if(document.hidden){AU.gestureReady=false;if(AU.ctx&&AU.ctx.state!=='closed')AU.ctx.suspend().catch(()=>{});}
+ else updateSoundStatus('返回游戏后点击一下可恢复声音，也可点“测试声音”');
+});
+addEventListener('pageshow',()=>{AU.gestureReady=false;setPaused('background',document.hidden);if(AU.ctx&&AU.ctx.state!=='running')updateSoundStatus('点击游戏或测试声音恢复音频')});
+
 function setMusic(on){SET.music=on;saveSet();if(AU.mus)AU.mus.gain.value=on?.06:0}
 
 /* ================= 动态像素背景 ================= */
@@ -633,7 +721,7 @@ let S=null,busy=false;const selected=new Set();
 let CW=90,JW=90;
 const REC=Object.assign({bestHand:0,bestAnte:0,wins:0,runs:0,bestRound:0},JSON.parse(localStorage.getItem('nj_rec')||'{}'));
 const saveRec=()=>localStorage.setItem('nj_rec',JSON.stringify(REC));
-function save(){if(!S)return;if(S.phase==='over'){localStorage.removeItem('nj_save');return}try{localStorage.setItem('nj_save',JSON.stringify(S))}catch(e){}}
+function save(){if(!S||busy)return false;if(S.phase==='over'){localStorage.removeItem('nj_save');return}try{localStorage.setItem('nj_save',JSON.stringify(S))}catch(e){}}
 function hasSave(){try{const s=JSON.parse(localStorage.getItem('nj_save')||'null');return s&&s.v===1&&s.phase!=='over'}catch(e){return false}}
 const cardById=id=>S.deck.find(c=>c.id===id);
 function newRun(){
@@ -709,8 +797,9 @@ function computeScore(playedIds,heldIds){
 /* ================= 布局 ================= */
 let MOB=false;
 function layout(){
-  const W=innerWidth,H=innerHeight;MOB=W<760||H>W*1.15;document.body.classList.toggle('mob',MOB);
-  if(!MOB){const sw=W<1000?210:250;document.documentElement.style.setProperty('--sidew',sw+'px');const mainW=W-sw-30;
+  const W=innerWidth,H=window.visualViewport?.height||innerHeight;const SHORT=W>H&&H<=500;document.body.classList.toggle('short',SHORT);MOB=W<760||H>W*1.15;document.body.classList.toggle('mob',MOB);
+  if(SHORT){CW=Math.floor(clamp(Math.min((W-230)/7.5,(H-120)/2.8),38,68));JW=Math.floor(clamp((H-120)/3.5,32,56))}
+  else if(!MOB){const sw=W<1000?210:250;document.documentElement.style.setProperty('--sidew',sw+'px');const mainW=W-sw-30;
     CW=Math.floor(clamp(Math.min(mainW/9.6,(H-80)/(1.4*4.3)),48,112));JW=Math.floor(Math.min(CW,(mainW-30)/(7.6)))}
   else{CW=Math.floor(clamp(Math.min((W-12)/4.7,(H)/(1.4*7.2)),44,100));JW=Math.floor(clamp((W-12-40)/7.35,36,80))}
   const R=document.documentElement.style;R.setProperty('--cw',CW+'px');R.setProperty('--jw',JW+'px');
@@ -722,7 +811,7 @@ function layout(){
   if(BG.cv)bgResize();
 }
 /* ================= 渲染 ================= */
-function renderAll(noAnim){renderSide();renderJokers();renderCons();renderMid(noAnim);renderDeck()}
+function renderAll(noAnim){document.body.dataset.phase=S.phase;renderSide();renderJokers();renderCons();renderMid(noAnim);renderDeck()}
 function renderSide(){
   if(!S)return;
   const inRound=S.phase==='round';const b=S.blind;
@@ -790,7 +879,7 @@ function renderHand(newIds=[]){
     el.classList.toggle('sel',selected.has(id));el.classList.remove('nonscore','scoring');
     if(newIds.includes(id)){const r=hand.getBoundingClientRect();const dx=dr.left-(r.left+x0+i*sp),dy=dr.top-r.top;const k=newIds.indexOf(id);
       el.animate([{transform:`translate(${dx}px,${dy}px) rotate(-30deg) scale(.8)`},{transform:tf}],{duration:380/SET.speed,delay:k*70/SET.speed,easing:'cubic-bezier(.2,.8,.25,1.1)',fill:'backwards'});
-      setTimeout(()=>SFX.deal(k),k*70/SET.speed)}
+      sleep(k*70).then(()=>SFX.deal(k)).catch(()=>{})}
   });
 }
 function renderControls(){
@@ -804,7 +893,7 @@ function renderControls(){
 function updateButtons(){const p=$('#btnPlay'),d=$('#btnDisc');if(!p)return;const n=selected.size;const b=activeBoss();const need5=b&&b.must5&&S.hand.length>=5;
   p.disabled=!n||busy||(need5&&n!==5);d.disabled=!n||busy||S.discards<=0}
 function renderMid(noAnim){
-  const p=$('#panel');const ph=S.phase;
+  const p=$('#panel');const ph=S.phase;const phaseChanged=p.dataset.phase!==ph;p.dataset.phase=ph;document.body.dataset.phase=ph;const ctrl=$('#controls');if(document.body.classList.contains('short'))$('#main').insertBefore(ctrl,$('#deck'));else $('#mid').insertBefore(ctrl,p);
   $('#handArea').style.visibility=(ph==='round'||ph==='pack')?'visible':'hidden';
   $('#playArea').style.visibility=ph==='round'?'visible':'hidden';
   p.classList.toggle('packmode',ph==='pack');
@@ -812,7 +901,7 @@ function renderMid(noAnim){
   else{p.className='show'+(ph==='pack'?' packmode':'');if(noAnim)p.style.animation='none';else p.style.animation='';
     if(ph==='blind'){renderBlindSelect();bgTheme('blind')}else if(ph==='shop'){renderShop();bgTheme('shop')}else if(ph==='cashout'){renderCashout()}else if(ph==='pack'){renderPack()}
     else if(ph==='over'||ph==='win'){p.className='';p.innerHTML=''}}
-  renderHand();renderControls();
+  renderHand();renderControls();if(phaseChanged){p.scrollTop=0;$('#mid').scrollTop=ph==='round'&&document.body.classList.contains('short')?$('#mid').scrollHeight:0}
 }
 /* ================= 盲注选择 ================= */
 function tagHTML(k){const t=TAGS[k];return `<div class="tagi" style="--tc:${t.c}"><i>${t.i}</i><span>${t.n}<br>${t.d}</span></div>`}
@@ -848,14 +937,14 @@ function onCardClick(id){
 }
 function targetEl(tgt){if(!tgt)return null;if(tgt.t==='joker')return jokerEls.get(tgt.uid);return cardEls.get(tgt.id)}
 function popAt(el,text,cls){if(!el)return;const r=el.getBoundingClientRect();const d=document.createElement('div');d.className='pop '+cls;d.textContent=text;
-  d.style.left=(r.left+r.width/2)+'px';d.style.top=(r.top+4)+'px';d.style.animationDuration=(850/SET.speed)+'ms';$('#fx').appendChild(d);setTimeout(()=>d.remove(),900/SET.speed)}
+  d.style.left=(r.left+r.width/2)+'px';d.style.top=(r.top+4)+'px';d.style.animationDuration=(850/SET.speed)+'ms';$('#fx').appendChild(d);sleep(900).then(()=>d.remove()).catch(()=>d.remove())}
 function shakeEl(el){if(!el)return;const t=el.querySelector('.cin,.jin')||el;t.classList.remove('shk');void t.offsetWidth;t.classList.add('shk');t.style.animationDuration=(280/SET.speed)+'ms'}
 function bump(el){el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}
 function shakeScreen(){const a=$('#app');a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake')}
 function sparks(x,y,n=14,col='#ffd54a'){if(SET.speed>5)return;for(let i=0;i<n;i++){const s=document.createElement('div');s.className='spark';s.style.background=col;s.style.left=x+'px';s.style.top=y+'px';document.body.appendChild(s);
   const a=Math.random()*Math.PI*2,d=40+Math.random()*90;s.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px)`,opacity:0}],{duration:600+Math.random()*300,easing:'cubic-bezier(.1,.8,.3,1)'}).onfinish=()=>s.remove()}}
 function setCM(c,m){$('#sbChips').textContent=fmt(c);$('#sbMult').textContent=m<1e6&&m%1?(+m.toFixed(2)).toString():fmt(m)}
-async function countTo(el,from,to,ms){const t0=performance.now();ms/=SET.speed;return new Promise(res=>{const f=()=>{const k=Math.min(1,(performance.now()-t0)/ms);el.textContent=fmt(from+(to-from)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f);else res()};f()})}
+async function countTo(el,from,to,ms){let elapsed=0;while(elapsed<ms){await sleep(Math.min(24,ms-elapsed));elapsed+=24;const k=Math.min(1,elapsed/ms);el.textContent=fmt(from+(to-from)*(1-Math.pow(1-k,3)))}el.textContent=fmt(to)}
 async function playHand(){
   if(busy||S.phase!=='round')return;const ids=S.hand.filter(id=>selected.has(id));if(!ids.length)return;
   const b=activeBoss();if(b&&b.must5&&S.hand.length>=5&&ids.length!==5)return;
@@ -883,7 +972,7 @@ async function playHand(){
   const total=res.total;const before=S.score;S.score+=total;
   if(total>S.stats.best)S.stats.best=total;if(total>REC.bestHand){REC.bestHand=total;saveRec()}
   const pr=$('#played').getBoundingClientRect();
-  const big=document.createElement('div');big.className='bigscore';big.textContent=fmt(total);big.style.left=(pr.left+pr.width/2)+'px';big.style.top=(pr.top+pr.height*.35)+'px';big.style.animationDuration=(1100/SET.speed)+'ms';$('#fx').appendChild(big);setTimeout(()=>big.remove(),1150/SET.speed);
+  const big=document.createElement('div');big.className='bigscore';big.textContent=fmt(total);big.style.left=(pr.left+pr.width/2)+'px';big.style.top=(pr.top+pr.height*.35)+'px';big.style.animationDuration=(1100/SET.speed)+'ms';$('#fx').appendChild(big);sleep(1150).then(()=>big.remove()).catch(()=>big.remove());
   const target=blindTarget();const isBig=total>=target*.5;SFX.total(isBig);if(isBig){shakeScreen();sparks(pr.left+pr.width/2,pr.top+pr.height*.35,26)}
   await countTo($('#sbScore'),before,S.score,550);bump($('#sbScore'));
   await sleep(350);
@@ -930,10 +1019,10 @@ async function discard(){
   busy=true;actx();hideTip();hidePop();S.discards--;S.stats.discards++;selected.clear();
   const cards=ids.map(cardById);S.jokers.forEach(j=>{const f=JK[j.key].onDiscard;if(f)f(j,cards)});
   const dr=$('#deck').getBoundingClientRect();
-  ids.forEach((id,i)=>{const el=cardEls.get(id);const r=el.getBoundingClientRect();el.animate([{transform:el.style.transform+' translateY(-26%)',opacity:1},{transform:`translate(${dr.left-r.left+120}px,${-40}px) rotate(40deg)`,opacity:0}],{duration:320/SET.speed,delay:i*40/SET.speed,fill:'forwards'}).onfinish=function(){this.cancel();el.remove()};setTimeout(()=>SFX.deal(i),i*40/SET.speed)});
+  ids.forEach((id,i)=>{const el=cardEls.get(id);const r=el.getBoundingClientRect();el.animate([{transform:el.style.transform+' translateY(-26%)',opacity:1},{transform:`translate(${dr.left-r.left+120}px,${-40}px) rotate(40deg)`,opacity:0}],{duration:320/SET.speed,delay:i*40/SET.speed,fill:'forwards'}).onfinish=function(){this.cancel();el.remove()};sleep(i*40).then(()=>SFX.deal(i)).catch(()=>{})});
   S.hand=S.hand.filter(id=>!ids.includes(id));renderSide();renderJokers();updateButtons();
   await sleep(330+ids.length*40);
-  await drawCards();busy=false;previewHand();updateButtons();save();
+  await drawCards();busy=false;if(!S.hand.length){toast('已无可用手牌，本轮结束');gameOver();return}previewHand();updateButtons();save();
 }
 async function winRound(){
   busy=true;SFX.win();
@@ -1015,22 +1104,22 @@ async function pickPack(i){
 }
 function closePack(){const pk=S.pack;S.pack=null;selected.clear();S.phase=pk.ret;renderAll();save()}
 /* ================= 消耗牌 ================= */
-function tarotCan(key){const t=TAROT[key];if(t.sel){if(!(S.phase==='round'||S.phase==='pack'))return false;if(S.phase==='pack'&&!(S.pack&&S.pack.hand))return false;const n=selected.size;return n>=t.sel[0]&&n<=t.sel[1]}if(key==='bell')return S.jokers.length<S.jokerSlots;return true}
+function tarotCan(key){const t=TAROT[key];if(t.sel){if(!(S.phase==='round'||S.phase==='pack'))return false;if(S.phase==='pack'&&!(S.pack&&S.pack.hand))return false;const n=selected.size;return n>=t.sel[0]&&n<=t.sel[1]&&!(t.destroy&&n>=S.deck.length)}if(key==='bell')return S.jokers.length<S.jokerSlots;return true}
 function usePlanet(key){const l=S.levels[key];l.l++;S.stats.planets++;SFX.magic();S.jokers.forEach(j=>{const f=JK[j.key].onPlanet;if(f)f(j)});
   const h=HANDS[key];const sb=$('#sbHandName');sb.innerHTML=`${h.n} <small>升到 ${l.l} 级！</small>`;const v=handVal(key);setCM(v.c,v.m);bump($('#sbChips'));bump($('#sbMult'));popAt($('#sbHandName'),h.n+' 升级！','pw');renderJokers()}
 async function useTarot(key){
-  const t=TAROT[key];S.stats.tarots++;SFX.magic();
+  const t=TAROT[key];if(t.destroy&&selected.size>=S.deck.length){toast('至少保留一张牌，不能销毁整副牌组');return false}S.stats.tarots++;SFX.magic();
   if(t.sel){const hid=handIds();const cs=hid.filter(id=>selected.has(id)).map(cardById);
     if(t.destroy){cs.forEach(c=>{const el=cardEls.get(c.id);if(el)el.animate([{opacity:1,filter:'none'},{opacity:0,filter:'brightness(3)',transform:el.style.transform+' scale(.6)'}],{duration:420/SET.speed,fill:'forwards'});destroyCard(c.id)})}
     else{t.fn(cs);cs.forEach(c=>{cardEl(c);const el=cardEls.get(c.id);popAt(el,t.n,'pw')})}
-    selected.clear();await sleep(500);if(S.phase==='round'){sortHand()}renderHand();renderDeck();
+    selected.clear();await sleep(500);if(S.phase==='round'){if(t.destroy)await drawCards();if(!S.hand.length){busy=false;toast('已无可用手牌，本轮结束');gameOver();return}sortHand()}renderHand();renderDeck();
   }else{const r=t.fn();if(key==='hermit')popAt($('#sbMoney'),'+$'+r,'py');renderCons();renderJokers()}
   renderSide();
 }
 function consMenu(el,i){
   if(busy)return;actx();const it=S.cons[i];if(!it)return;
   const can=it.type==='planet'?true:tarotCan(it.key)&&S.phase!=='pack';
-  let hint='';if(it.type==='tarot'&&TAROT[it.key].sel&&S.phase!=='round')hint='<div class="dsc" style="color:#999">需在回合中选中手牌后使用</div>';
+  let hint='';if(it.type==='tarot'&&TAROT[it.key].sel&&S.phase!=='round')hint='<div class="dsc" style="color:#999">需在回合中选中手牌后使用</div>';if(it.type==='tarot'&&it.key==='rope'&&selected.size>=S.deck.length)hint='<div class="dsc">至少保留一张牌，不能销毁整副牌组</div>';
   openPop(el,itemInfo(it)+hint,[{t:'使用',cls:'red',dis:!can,fn:async()=>{hidePop();S.cons.splice(i,1);renderCons();busy=true;if(it.type==='planet')usePlanet(it.key);else await useTarot(it.key);busy=false;renderCons();updateButtons();previewHand();if(S.phase==='shop')renderShop();save()}},
     {t:'出售 $1',cls:'gold',fn:()=>{S.cons.splice(i,1);addMoney(1);SFX.sell();hidePop();renderCons();if(S.phase==='shop')renderShop();save()}}]);
 }
@@ -1071,9 +1160,49 @@ function showDeck(tab='deck'){
   }else{body=`<table class="help lvtab"><tr><th>牌型</th><th>等级</th><th>筹码 × 倍率</th><th>已打出</th></tr>${HAND_ORDER.map(k=>{const v=handVal(k);return `<tr><td>${HANDS[k].n}</td><td><b>${S.levels[k].l}</b></td><td><span class="blue-t">${v.c}</span> × <span class="red-t">${v.m}</span></td><td>${S.levels[k].p}</td></tr>`}).join('')}</table>`}
   modal(`<h2>牌组</h2><div class="dv-tabs"><button class="btn sm ${tab==='deck'?'orange':'gray'}" data-act="deck">全部牌</button><button class="btn sm ${tab==='lv'?'orange':'gray'}" data-act="levels">牌型等级</button></div>${body}<div class="row"><button class="btn red" data-act="closeov">返回</button></div>`);
 }
+/* 独立 Web App、声音状态、稳定存档文件。无账号、无联网存档。 */
+function standaloneMode(){return navigator.standalone===true||matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches}
+function deviceHelp(){
+ modal(`<h2>手机打开与声音</h2><div class="help"><p class="modebadge">当前：${standaloneMode()?'主屏幕独立运行（无 Safari 工具栏）':'浏览器标签页'}</p><h3>iPhone 添加到主屏幕</h3><p>用 Safari 打开本游戏网址，点页面菜单中的“共享”（部分布局直接点共享按钮），下拉选择“添加到主屏幕”，再点“添加”。若没有此选项，可在共享表单底部“编辑操作”中找回。</p><p>iOS 26 及更新版本：保留“作为网页 App 打开 / Open as Web App”开启。较早版本：本站已声明独立运行，从主屏幕图标进入。</p><p>独立模式可隐藏 Safari 地址栏，不是强制系统全屏；刘海、状态栏与底部横条仍可能保留。网页不能解除手机方向锁，竖横屏都可玩。</p><h3>连接和存档</h3><p>主屏幕版需要联网加载，不保证断网重新打开。Safari 与主屏幕版的存档可能独立，请先导出存档，再在新入口导入。下载的单 HTML 版仍可在支持本地网页的电脑浏览器离线运行。</p><h3>声音</h3><p id="audioStatus" role="status"></p><button class="btn blue" data-act="testsound">开启音效并测试声音</button><p>这会开启音效，但不改变音乐开关。iOS 支持时选择播放音频模式，可能暂停其他 App 音乐。仍听不到时请检查媒体音量、蓝牙输出及系统静音设置。</p></div><div class="row"><button class="btn red" data-act="${S?'pause':'menu'}">返回</button></div>`);updateSoundStatus();
+}
+function stableStateForExport(){if(busy||!S){const old=localStorage.getItem('nj_save');if(!old)throw new Error('还没有完整存档点');return JSON.parse(old)}if(!S||S.phase==='over')throw new Error('没有可导出的牌局');return S}
+function exportSave(){try{const state=stableStateForExport();const body=JSON.stringify({format:'neon-jester-save',version:1,state},null,2);const url=URL.createObjectURL(new Blob([body],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='霓虹丑角-存档.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);setFileStatus(busy?'已导出上一个完整存档点；未含本次未完成动画':'已导出完整牌局')}catch(e){setFileStatus(e.message)}}
+function setFileStatus(t){const el=$('#fileStatus');if(el)el.textContent=t;else toast(t)}
+function validateSave(input){
+ const fail=()=>{throw new Error('存档格式或字段不合法，请选择本游戏导出的 JSON 文件')};
+ if(!input||typeof input!=='object'||input.format!=='neon-jester-save'||input.version!==1)fail();
+ const s=input.state;if(!s||s.v!==1)fail();
+ const own=(obj,k)=>Object.prototype.hasOwnProperty.call(obj,k);
+ const num=(v,min=0,max=1e12,integer=true)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max&&(!integer||Number.isInteger(v));
+ const arr=(a,max=500)=>Array.isArray(a)&&a.length<=max;
+ const safe=(v)=>{if(!v||typeof v!=='object')return;if(Object.keys(v).some(k=>['__proto__','prototype','constructor'].includes(k)))fail();for(const x of Object.values(v))safe(x)};safe(input);
+ if(!num(s.ante,1,10000)||!num(s.blind,0,2)||!num(s.round)||!num(s.money,0,1e12)||!num(s.score,0,1e250,false)||!num(s.uid,1)||!num(s.nextId,1)||!['round','blind','shop','pack','cashout','win'].includes(s.phase))fail();
+ for(const k of ['hands','discards'])if(!num(s[k],0,4))fail();
+ if(s.baseHands!==4||s.baseDisc!==3||s.baseHandSize!==8||![7,8].includes(s.handSize)||s.jokerSlots!==5||s.consSlots!==2)fail();
+ if(!arr(s.deck,10000)||s.deck.length===0)fail();const ids=new Set();const deck=s.deck.map(c=>{if(!c||!num(c.id,1)||ids.has(c.id)||!num(c.r,2,14)||!SUITS.includes(c.s)||(c.enh!==null&&!own(ENH_N,c.enh)))fail();ids.add(c.id);return{id:c.id,r:c.r,s:c.s,enh:c.enh}});
+ const idlist=(a,max=10000)=>{if(!arr(a,max)||a.some(id=>!ids.has(id))||new Set(a).size!==a.length)fail();return a.slice()};
+ const hand=idlist(s.hand,8),draw=idlist(s.draw);if(hand.some(id=>draw.includes(id)))fail();
+ if(s.nextId<=Math.max(...ids))fail();
+ if(!own(BOSS,s.boss)||!arr(s.usedBoss,13)||s.usedBoss.some(k=>!BKEYS.includes(k))||!arr(s.tags,2)||s.tags.length!==2||s.tags.some(k=>!own(TAGS,k))||!arr(s.blindState,3)||s.blindState.length!==3||s.blindState.some(k=>!['cur','up','done','skip'].includes(k)))fail();
+ if(!arr(s.typesThisRound,4)||s.typesThisRound.some(k=>!own(HANDS,k))||!num(s.freeRerolls,0,1000)||!num(s.invest)||!['rank','suit'].includes(s.sortMode)||typeof s.endless!=='boolean')fail();
+ if(!arr(s.jokers,5))fail();const uids=new Set();const jokers=s.jokers.map(j=>{if(!j||!own(JK,j.key)||!num(j.uid,1)||uids.has(j.uid)||!num(j.sv||0))fail();uids.add(j.uid);const d={};for(const k of Object.keys(JK[j.key].init||{})){if(!j.d||!num(j.d[k],0,1e12,false))fail();d[k]=j.d[k]}return{uid:j.uid,key:j.key,d,sv:j.sv||0}});if(s.uid<=Math.max(0,...uids))fail();
+ const consumable=c=>{if(!c||!['tarot','planet'].includes(c.type)||!own(c.type==='tarot'?TAROT:PLANET,c.key))fail();return{type:c.type,key:c.key}};
+ if(!arr(s.cons,2))fail();const cons=s.cons.map(consumable);
+ const levels={};for(const k of Object.keys(HANDS)){const l=s.levels?.[k];if(!l||!num(l.l,1,1e6)||!num(l.p))fail();levels[k]={l:l.l,p:l.p}}
+ const stats={};for(const k of ['best','hands','discards','earned','bought','bossBeat','glass','tarots','planets']){if(!num(s.stats?.[k],0,1e250,false))fail();stats[k]=s.stats[k]}
+ const packdef=p=>{if(!p||!['tarot','planet','joker'].includes(p.t)||!num(p.size,2,5)||!num(p.cost,0,6))fail();const n={tarot:'秘仪',planet:'星图',joker:'丑角'}[p.t]+(p.size>3?'大包':'包');return{t:p.t,n,size:p.size,cost:p.cost,w:1}};
+ const item=x=>{if(!x||!num(x.cost,0,100)||x.sold!==undefined&&typeof x.sold!=='boolean')fail();let y;if(x.type==='pack')y={type:'pack',p:packdef(x.p)};else if(x.type==='joker'){if(!own(JK,x.key))fail();y={type:'joker',key:x.key}}else y=consumable(x);return{...y,cost:x.cost,sold:!!x.sold}};
+ let shop=null;if(s.shop!==null){if(!s.shop||!arr(s.shop.items,2)||!arr(s.shop.packs,2)||!num(s.shop.reroll,5,1e6))fail();shop={items:s.shop.items.map(item),packs:s.shop.packs.map(item),reroll:s.shop.reroll};if(shop.packs.some(x=>x.type!=='pack'))fail()}
+ let pack=null;if(s.pack!==null){const p=s.pack;if(!p||!arr(p.choices,5)||!['blind','shop'].includes(p.ret))fail();const pd=packdef(p.p);const choices=p.choices.map(x=>x?.type==='joker'&&own(JK,x.key)?{type:'joker',key:x.key}:consumable(x));if(choices.some(x=>x.type!==pd.t)||choices.length!==pd.size)fail();pack={p:pd,choices,hand:pd.t==='tarot'?idlist(p.hand,8):null,ret:p.ret}}
+ let cash=null;if(s.cash!==null){if(!s.cash||!arr(s.cash.rows,20)||!num(s.cash.total))fail();const rows=s.cash.rows.map(r=>{if(!r||typeof r.l!=='string'||r.l.length>100||!num(r.v))fail();return{l:r.l,v:r.v}});if(rows.reduce((n,r)=>n+r.v,0)!==s.cash.total)fail();cash={rows,total:s.cash.total}}
+ if(s.phase==='shop'&&!shop||s.phase==='pack'&&!pack||s.phase==='cashout'&&!cash||s.phase==='round'&&hand.length===0)fail();
+ return{v:1,nextId:s.nextId,uid:s.uid,ante:s.ante,blind:s.blind,round:s.round,money:s.money,hands:s.hands,discards:s.discards,baseHands:4,baseDisc:3,baseHandSize:8,handSize:s.handSize,jokerSlots:5,consSlots:2,deck,draw,hand,jokers,cons,score:s.score,levels,phase:s.phase,blindState:s.blindState.slice(),boss:s.boss,usedBoss:s.usedBoss.slice(),tags:s.tags.slice(),typesThisRound:s.typesThisRound.slice(),shop,pack,freeRerolls:s.freeRerolls,sortMode:s.sortMode,endless:s.endless,invest:s.invest,cash,stats};
+}
+async function importSaveFile(file){try{if(!file||file.size>1000000)throw new Error('存档文件过大或未选择文件');const parsed=JSON.parse(await file.text());const clean=validateSave(parsed);if(!confirm('导入将替换当前牌局。建议先导出当前存档。继续吗？'))return;resetRuntime();localStorage.setItem('nj_save',JSON.stringify(clean));loadGame();closeModal();toast('存档已导入')}catch(e){setFileStatus(e instanceof SyntaxError?'文件不是有效 JSON 存档':e.message)}}
+function saveFilesMenu(){modal(`<h2>存档备份</h2><div class="help"><p>Safari 和主屏幕版存档可能独立。先在原入口导出，再在新入口导入。只保存本机，没有云端账户。</p><p>动画尚未完成时导出的是上一个完整存档点，刷新/退出同样回到该点，不会保存半次出牌。</p><div class="row"><button class="btn blue" data-act="export">导出存档</button><label class="btn green" for="saveInput">选择存档文件<input id="saveInput" type="file" accept="application/json,.json" hidden></label></div><p id="fileStatus" role="status"></p></div><div class="row"><button class="btn red" data-act="${S?'pause':'menu'}">返回</button></div>`);$('#saveInput').onchange=e=>importSaveFile(e.target.files[0]);}
 /* ================= 弹窗/菜单 ================= */
-function modal(html){const o=$('#ov');o.innerHTML=`<div class="modal">${html}</div>`;o.classList.add('show')}
-function closeModal(){$('#ov').classList.remove('show');$('#ov').innerHTML=''}
+function modal(html){setPaused('modal',true);const o=$('#ov');o.innerHTML=`<div class="modal">${html}</div>`;o.classList.add('show')}
+function closeModal(){setPaused('modal',false);$('#ov').classList.remove('show');$('#ov').innerHTML=''}
 function showMenu(){
   bgTheme('menu');
   const cont=hasSave();
@@ -1081,7 +1210,7 @@ function showMenu(){
   <div class="menucards" id="menuCards"></div>
   ${cont?`<button class="btn blue big" data-act="continue">继续游戏</button>`:''}
   <button class="btn ${cont?'orange':'blue big'}" data-act="newgame">新游戏</button>
-  <button class="btn red" data-act="help">玩法说明</button><button class="btn gray" data-act="settings">设置</button>
+  <button class="btn red" data-act="help">玩法说明</button><button class="btn gray" data-act="settings">设置</button><button class="btn gray" data-act="devicehelp">手机打开 / 声音</button><button class="btn gray" data-act="savefiles">存档备份</button>
   <div class="lbl" style="text-align:center;line-height:1.6">最高单手得分 <b class="gold-t">${fmt(REC.bestHand)}</b> · 最高底注 <b class="gold-t">${REC.bestAnte}</b> · 通关 <b class="gold-t">${REC.wins}</b> 次 · 已开局 ${REC.runs}</div></div>`);
   const mc=$('#menuCards');const demo=[{id:-1,r:14,s:'S'},{id:-2,r:13,s:'H'},{id:-3,r:12,s:'D'},{id:-4,r:11,s:'C'},{id:-5,r:10,s:'H'}];
   demo.forEach((c,i)=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<div class="cin">${cardInner(c)}</div>`;d.style.left=(i*55+10)+'px';d.style.top='14px';d.style.transform=`rotate(${(i-2)*8}deg) translateY(${Math.abs(i-2)*6}px)`;mc.appendChild(d)});
@@ -1092,7 +1221,7 @@ function helpHTML(){return `<h2>玩法说明</h2><div class="help">
 <h3>计分 = 筹码 × 倍率</h3>牌型给基础筹码和倍率；参与计分的每张牌再加上点数筹码（2~10 按点数，J/Q/K 为 10，A 为 11）。然后小丑从<b>左到右</b>依次结算：+筹码、+倍率、×倍率。顺序很重要，先加后乘更划算。
 <table><tr><th>牌型</th><th>筹码 × 倍率</th><th>牌型</th><th>筹码 × 倍率</th></tr>
 ${[['SF','4K'],['FH','FL'],['ST','3K'],['TP','PR'],['HC',null]].map(r=>`<tr>${r.map(k=>k?`<td>${HANDS[k].n}</td><td><span class="blue-t">${HANDS[k].c}</span> × <span class="red-t">${HANDS[k].m}</span></td>`:'<td></td><td></td>').join('')}</tr>`).join('')}</table>
-<h3>经济</h3>过关得盲注奖励（$3/$4/$5）+ 每剩余一次出牌 $1 + 利息（每持有 $5 得 $1，最多 $5）。小盲/大盲可以<b>跳过</b>，换取一个奖励标签。
+<p>复制出现五张同点数时，保守按其中四张作“四条”计分，沿用四条升级；不会退化为高牌。</p><h3>经济</h3>过关得盲注奖励（$3/$4/$5）+ 每剩余一次出牌 $1 + 利息（每持有 $5 得 $1，最多 $5）。小盲/大盲可以<b>跳过</b>，换取一个奖励标签。
 <h3>商店</h3>可买小丑（最多 5 个）、秘仪牌、星图牌（消耗槽 2 个）和卡包。刷新从 $5 起每次 +$1。小丑可出售，可拖动或用 ◀ ▶ 调整顺序。
 <h3>消耗牌</h3><b>秘仪牌</b>：改花色、升点数、复制、摧毁、强化牌、给金币等，需在回合中先选中手牌再使用。<b>星图牌</b>：提升对应牌型等级。
 <h3>强化牌</h3>奖励（+30 筹码）、倍率（+4 倍率）、琉璃（×2 倍率，可能碎）、钢铁（留在手中 ×1.5）、黄金（留在手中回合结束 +$3）。
@@ -1100,13 +1229,13 @@ ${[['SF','4K'],['FH','FL'],['ST','3K'],['TP','PR'],['HC',null]].map(r=>`<tr>${r.
 <h3>操作</h3>点击/轻触牌选中；点击小丑或消耗牌查看并操作；拖动小丑换位置；右下角牌堆查看牌组和牌型等级。电脑上鼠标悬停可看说明。
 </div><div class="row"><button class="btn red" data-act="${menuOpen?'menu':'closeov'}">返回</button></div>`}
 let menuOpen=false;
-function settingsHTML(){return `<h2>设置</h2><div class="menu">
+function settingsHTML(){return `<h2>设置</h2><p class="savehint">开启测试会启用音效，支持时切换播放音频模式，可能暂停其他 App 音乐。</p><p id="audioStatus" class="savehint" role="status"></p><div class="menu"><button class="btn blue" data-act="testsound">开启音效并测试声音</button>
 <div class="toggle"><span>音效</span><button class="btn sm ${SET.sfx?'green':'gray'}" data-act="tsfx">${SET.sfx?'开':'关'}</button></div>
 <div class="toggle"><span>背景音乐</span><button class="btn sm ${SET.music?'green':'gray'}" data-act="tmusic">${SET.music?'开':'关'}</button></div>
 <div class="toggle"><span>动画速度</span><button class="btn sm orange" data-act="tspeed">×${SET.speed}</button></div>
 <div class="toggle"><span>CRT 扫描线</span><button class="btn sm ${SET.crt?'green':'gray'}" data-act="tcrt">${SET.crt?'开':'关'}</button></div></div>`}
-function showSettings(back){modal(settingsHTML()+`<div class="row"><button class="btn red" data-act="${back}">返回</button></div>`)}
-function showPause(){if(!S)return;modal(`<h2>暂停</h2><div class="menu"><button class="btn blue big" data-act="closeov">继续</button><button class="btn red" data-act="helpP">玩法说明</button><button class="btn gray" data-act="settingsP">设置</button><button class="btn orange" data-act="deck">查看牌组</button><button class="btn gray" data-act="quit">保存并回主菜单</button><button class="btn red sm" data-act="abandon">放弃本局</button></div>`)}
+function showSettings(back){modal(settingsHTML()+`<div class="row"><button class="btn red" data-act="${back}">返回</button></div>`);updateSoundStatus()}
+function showPause(){if(!S)return;modal(`<h2>暂停</h2><p class="savehint">计分已暂停。动画未完成时退出或刷新，将回到上一个完整存档点。</p><div class="menu"><button class="btn blue big" data-act="closeov">继续</button><button class="btn red" data-act="helpP">玩法说明</button><button class="btn gray" data-act="settingsP">设置 / 测试声音</button><button class="btn gray" data-act="devicehelp">手机独立打开</button><button class="btn gray" data-act="savefiles">存档导出 / 导入</button><button class="btn orange" data-act="deck">查看牌组</button><button class="btn gray" data-act="quit">回主菜单（保留完整存档）</button><button class="btn red sm" data-act="abandon">放弃本局</button></div>`)}
 function statsHTML(){const st=S.stats;let most='—',mp=0;for(const k in S.levels)if(S.levels[k].p>mp){mp=S.levels[k].p;most=HANDS[k].n+'（'+mp+' 次）'}
   return `<div class="statsgrid"><span>到达底注</span><b>${S.ante}</b><span>回合数</span><b>${S.round}</b><span>最佳单手</span><b class="gold-t">${fmt(st.best)}</b><span>最常打出</span><b>${most}</b><span>出牌 / 弃牌</span><b>${st.hands} / ${st.discards}</b><span>累计赚取</span><b class="gold-t">$${st.earned}</b><span>击败首领</span><b>${st.bossBeat}</b><span>购买次数</span><b>${st.bought}</b><span>使用秘仪 / 星图</span><b>${st.tarots} / ${st.planets}</b><span>历史最佳单手</span><b class="gold-t">${fmt(REC.bestHand)}</b></div>`}
 function gameOver(){
@@ -1127,6 +1256,7 @@ function applyTag(k){
 }
 /* ================= 事件 ================= */
 const ACT={
+  devicehelp:()=>deviceHelp(),savefiles:()=>saveFilesMenu(),export:()=>exportSave(),testsound:()=>testSound(),
   play:()=>playHand(),discard:()=>discard(),
   sortr:()=>{S.sortMode='rank';sortHand();renderHand();SFX.click();save()},sorts:()=>{S.sortMode='suit';sortHand();renderHand();SFX.click();save()},
   selblind:()=>{if(busy)return;SFX.click();startRound()},
@@ -1136,21 +1266,21 @@ const ACT={
   deck:()=>showDeck('deck'),levels:()=>showDeck('lv'),closeov:()=>{closeModal();menuOpen=false},
   help:()=>{menuOpen=$('#ov').classList.contains('show')&&!!$('.logo');modal(helpHTML())},helpP:()=>{modal(helpHTML().replace(/data-act="(menu|closeov)">返回/,'data-act="pause">返回'))},
   settings:()=>showSettings('menu'),settingsP:()=>showSettings('pause'),pause:()=>showPause(),
-  tsfx:el=>{SET.sfx=!SET.sfx;saveSet();refreshSettings(el)},tmusic:el=>{actx();setMusic(!SET.music);refreshSettings(el)},
+  tsfx:el=>{SET.sfx=!SET.sfx;saveSet();if(SET.sfx)unlockAudio().catch(()=>{});refreshSettings(el);updateSoundStatus()},tmusic:el=>{actx();setMusic(!SET.music);if(SET.music)unlockAudio().catch(()=>{});refreshSettings(el)},
   tspeed:el=>{const v=[1,1.5,2,3];SET.speed=v[(v.indexOf(SET.speed)+1)%v.length]||1;saveSet();refreshSettings(el)},
   tcrt:el=>{SET.crt=!SET.crt;saveSet();document.body.classList.toggle('nocrt',!SET.crt);refreshSettings(el)},
-  newgame:()=>{closeModal();cardEls.clear();jokerEls.forEach(e=>e.remove());jokerEls.clear();$('#hand').innerHTML='';$('#played').innerHTML='';newRun();renderAll();save()},
-  continue:()=>{loadGame();closeModal()},menu:()=>{menuOpen=true;showMenu()},quit:()=>{save();menuOpen=true;showMenu()},
-  abandon:()=>{if(confirm('确定放弃本局吗？')){localStorage.removeItem('nj_save');S=null;menuOpen=true;showMenu()}},
+  newgame:()=>{resetRuntime();closeModal();cardEls.clear();jokerEls.forEach(e=>e.remove());jokerEls.clear();$('#hand').innerHTML='';$('#played').innerHTML='';newRun();renderAll();save()},
+  continue:()=>{loadGame();closeModal()},menu:()=>{menuOpen=true;showMenu()},quit:()=>{save();resetRuntime();S=null;menuOpen=true;showMenu()},
+  abandon:()=>{if(confirm('确定放弃本局吗？')){resetRuntime();localStorage.removeItem('nj_save');S=null;menuOpen=true;showMenu()}},
   endless:()=>{S.endless=true;S.ante++;newAnte();closeModal();enterShop()},endwin:()=>{localStorage.removeItem('nj_save');S.phase='over';menuOpen=true;showMenu()},
 };
 function refreshSettings(el){const back=$('#ov [data-act="menu"],#ov [data-act="pause"]');showSettings(back?back.dataset.act:'menu')}
-function loadGame(){try{S=JSON.parse(localStorage.getItem('nj_save'));}catch(e){S=null}if(!S){newRun()}
+function loadGame(){resetRuntime();try{S=JSON.parse(localStorage.getItem('nj_save'));}catch(e){S=null}if(!S){newRun()}
   cardEls.clear();jokerEls.forEach(e=>e.remove());jokerEls.clear();$('#hand').innerHTML='';$('#played').innerHTML='';selected.clear();busy=false;
-  if(S.phase==='pack'&&!S.pack)S.phase='shop';renderAll();if(S.phase==='win')setTimeout(showWin,50)}
+  if(S.phase==='pack'&&!S.pack)S.phase='shop';renderAll();if(S.phase==='win'){const epoch=runEpoch;setTimeout(()=>{if(epoch===runEpoch&&S?.phase==='win')showWin()},50)}}
 document.addEventListener('click',e=>{
   actx();
-  const pb=e.target.closest('[data-pop]');if(pb){if(pb.disabled)return;const f=popFns[+pb.dataset.pop];if(f)f();return}
+  const pb=e.target.closest('[data-pop]');if(pb){if(pb.disabled)return;const f=popFns[+pb.dataset.pop];if(f)guarded(f)();return}
   const a=e.target.closest('[data-act]');
   if(!e.target.closest('#pop'))hidePop();
   if(a&&!a.disabled){const k=a.dataset.act;if(ACT[k]){if(['play','discard','selblind','skip','cashout','next','buy','pickpack'].includes(k)&&busy)return;if(a.tagName==='BUTTON'&&!['play','discard'].includes(k))SFX.click();ACT[k](a)}}
@@ -1158,8 +1288,10 @@ document.addEventListener('click',e=>{
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('#pop'))hidePop()},true);
 document.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse')return;const el=e.target.closest('.card,.jk');if(el&&el._tip&&!el.classList.contains('drag'))showTip(el)});
 document.addEventListener('pointerout',e=>{if(e.pointerType!=='mouse')return;const el=e.target.closest('.card,.jk');if(el&&!el.contains(e.relatedTarget))hideTip()});
-document.addEventListener('keydown',e=>{if(!S||$('#ov').classList.contains('show'))return;if(e.key==='Enter')ACT.play();else if(e.key==='Backspace'||e.key==='Delete')ACT.discard();else if(e.key==='Escape')showPause()});
-let rt=null;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,80)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ov').classList.contains('show')&&S){closeModal();return}if(!S||$('#ov').classList.contains('show'))return;if(e.key==='Enter')ACT.play();else if(e.key==='Backspace'||e.key==='Delete')ACT.discard();else if(e.key==='Escape')showPause()});
+let rt=null;function viewportChanged(){const v=window.visualViewport;document.documentElement.style.setProperty('--vh',(v?v.height:innerHeight)+'px');document.documentElement.style.setProperty('--vtop',(v?v.offsetTop:0)+'px');clearTimeout(rt);rt=setTimeout(layout,80)}
+addEventListener('resize',viewportChanged);visualViewport?.addEventListener('resize',viewportChanged);visualViewport?.addEventListener('scroll',viewportChanged);viewportChanged();
+playHand=guarded(playHand);discard=guarded(discard);startRound=guarded(startRound);pickPack=guarded(pickPack);
 /* ================= 启动 ================= */
 document.body.classList.toggle('nocrt',!SET.crt);if(QS.has('fast'))document.body.classList.add('fast');
 layout();bgInit();menuOpen=true;showMenu();

@@ -1,0 +1,15 @@
+{
+  "id": "/poker-jester/",
+  "name": "霓虹丑角 · 扑克肉鸽",
+  "short_name": "霓虹丑角",
+  "lang": "zh-CN",
+  "start_url": "/poker-jester/",
+  "scope": "/poker-jester/",
+  "display": "standalone",
+  "background_color": "#0b1823",
+  "theme_color": "#0b1823",
+  "icons": [
+    {"src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
